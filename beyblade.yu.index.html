@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>NEON CORE 終端機</title>
+
+    <!-- iOS 專屬：允許網頁以全螢幕 App 模式執行 (加到主畫面後開啟會隱藏網址列) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="量子終端">
+    
+    <!-- 引入 Tailwind CSS (打造科技感介面) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* 酷炫霓虹發光與背景動畫 */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(139, 92, 246, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(6, 182, 212, 0.9), 0 0 80px rgba(139, 92, 246, 0.7); }
+        }
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rotate-reverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .neon-box-glow {
+            animation: pulse-glow 3s infinite;
+        }
+        .rotate-outer {
+            animation: rotate-slow 15s linear infinite;
+        }
+        .rotate-inner {
+            animation: rotate-reverse 8s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-[#030712] text-white min-h-screen flex flex-col items-center justify-between p-6 font-sans select-none overflow-x-hidden">
+
+    <!-- 頂部裝飾 (適配 iOS 滿版瀏海頭) -->
+    <div class="h-6 w-full"></div>
+
+    <!-- 主要內容卡片 -->
+    <div class="max-w-md w-full bg-slate-950/80 border border-cyan-500/30 rounded-[2.5rem] p-6 md:p-8 shadow-[0_0_50px_rgba(6,182,212,0.15)] flex flex-col items-center text-center relative overflow-hidden backdrop-blur-2xl my-auto">
+        
+        <!-- 背景炫光環境光源 -->
+        <div class="absolute -top-12 left-1/4 w-48 h-48 bg-cyan-500 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+        <div class="absolute -bottom-12 right-1/4 w-48 h-48 bg-purple-600 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+
+        <!-- 科技感裝飾線條 -->
+        <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500 rounded-tl-[2.5rem] opacity-60"></div>
+        <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-cyan-500 rounded-tr-[2.5rem] opacity-60"></div>
+        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-cyan-500 rounded-bl-[2.5rem] opacity-60"></div>
+        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-cyan-500 rounded-br-[2.5rem] opacity-60"></div>
+
+        <!-- 桌面圖示 2.0 預覽 (這個就是你加到主畫面後，會出現在手機桌面的圖案！) -->
+        <div class="relative w-32 h-32 mb-6 cursor-pointer active:scale-95 transition-transform duration-200">
+            <!-- 科技感旋轉環外圈 -->
+            <div class="absolute inset-[-8px] border border-dashed border-cyan-400/30 rounded-[2.8rem] rotate-outer pointer-events-none"></div>
+            <!-- 科技感旋轉環內圈 -->
+            <div class="absolute inset-[-4px] border border-cyan-500/20 rounded-[2.6rem] rotate-inner pointer-events-none"></div>
+            
+            <!-- 主圖示本體 -->
+            <div id="desktop-icon-display" class="w-full h-full rounded-[2.2rem] neon-box-glow border border-cyan-300/40 overflow-hidden relative z-10 bg-slate-900">
+                <!-- 這裡會由 JS 動態填入高畫質 SVG 圖示 -->
+            </div>
+            
+            <!-- 閃爍綠色指示燈 -->
+            <div class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-950 z-20 animate-ping"></div>
+            <div class="absolute top-0 right-0 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-950 z-20"></div>
+        </div>
+        
+        <!-- App 名稱 & 狀態 -->
+        <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-emerald-400 to-indigo-500 tracking-wider mb-1">
+            NEON CORE
+        </h1>
+        <div class="flex items-center gap-2 mb-6">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-[10px] text-cyan-400 font-mono tracking-widest uppercase">// 系統雲端部署成功</span>
+        </div>
+
+        <!-- GitHub Pages 安裝引導指南 -->
+        <div class="w-full bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-left mb-6 relative">
+            <h2 class="text-cyan-300 font-bold text-sm mb-3 flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                如何加到手機桌面？
+            </h2>
+            
+            <div class="space-y-4 text-xs">
+                <div class="border-l-2 border-cyan-500/50 pl-3">
+                    <span class="font-bold text-slate-200 block mb-0.5">🍎 蘋果 iPhone 瀏覽器 (Safari)</span>
+                    <p class="text-slate-400 leading-relaxed">
+                        1. 點擊 Safari 底部工具列的「<strong class="text-cyan-300 font-semibold">分享 📤</strong>」按鈕。<br>
+                        2. 往下滑動，選取「<strong class="text-cyan-300 font-semibold">加入主畫面 ➕</strong>」即可！
+                    </p>
+                </div>
+                
+                <div class="border-l-2 border-indigo-500/50 pl-3">
+                    <span class="font-bold text-slate-200 block mb-0.5">🤖 安卓 Android 瀏覽器 (Chrome)</span>
+                    <p class="text-slate-400 leading-relaxed">
+                        1. 點擊網頁右上角的「<strong class="text-cyan-300 font-semibold">選單 ⋮</strong>」按鈕。<br>
+                        2. 選擇「<strong class="text-cyan-300 font-semibold">加到主畫面</strong>」或「安裝應用程式」。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 手機硬體/連接狀態模擬 -->
+        <div class="w-full grid grid-cols-2 gap-3 mb-6 font-mono text-left">
+            <div class="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl">
+                <span class="text-[10px] text-slate-500 block mb-0.5">PWA 傳輸協定</span>
+                <span class="text-xs text-emerald-400 font-bold">HTTPS SECURE</span>
+            </div>
+            <div class="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl">
+                <span class="text-[10px] text-slate-500 block mb-0.5">圖示解析度</span>
+                <span class="text-xs text-cyan-400 font-bold">512px VECTOR</span>
+            </div>
+        </div>
+
+        <!-- 主按鈕 (點擊有手機震動回饋) -->
+        <button onclick="triggerSystemCheck()" class="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-extrabold py-4 px-6 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.4)] active:scale-[0.98] focus:outline-none tracking-widest text-sm">
+            連線至主機板
+        </button>
+    </div>
+
+    <!-- 頁尾宣告 -->
+    <div class="text-center pb-2 text-[10px] text-slate-600 tracking-wider font-mono">
+        &copy; NEON CORE LABS // ALL RIGHTS RESERVED
+    </div>
+
+    <script>
+        // 🌟 重新設計的太空極光量子核心 2.0 SVG 圖示 (高質感、高對比，完美適配手機案頭)
+        const coolSvgIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <defs>
+                <!-- 背景深邃黑色科技漸層 -->
+                <linearGradient id="skyBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#030712" />
+                    <stop offset="40%" stop-color="#0b0f19" />
+                    <stop offset="100%" stop-color="#020617" />
+                </linearGradient>
+                <!-- 青色霓虹漸層 -->
+                <linearGradient id="neonCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#22d3ee" />
+                    <stop offset="100%" stop-color="#06b6d4" />
+                </linearGradient>
+                <!-- 紫色極光漸層 -->
+                <linearGradient id="neonPurple" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#a855f7" />
+                    <stop offset="100%" stop-color="#6366f1" />
+                </linearGradient>
+                <!-- 量子核心發光特效 -->
+                <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="15" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+            </defs>
+
+            <!-- 1. 手機圖標標準尺寸圓角背景 -->
+            <rect width="512" height="512" rx="120" fill="url(#skyBg)"/>
+
+            <!-- 2. 精密科技電路網格裝飾線 -->
+            <path d="M 0,128 L 512,128 M 0,384 L 512,384 M 128,0 L 128,512 M 384,0 L 384,512" stroke="#111827" stroke-width="4"/>
+            <circle cx="256" cy="256" r="220" fill="none" stroke="#1e293b" stroke-width="3" stroke-dasharray="8 12"/>
+
+            <!-- 3. 外圍科技感刻度齒輪斷面圓環 -->
+            <circle cx="256" cy="256" r="160" fill="none" stroke="url(#neonCyan)" stroke-width="14" stroke-dasharray="190 30 70 30" stroke-linecap="round" filter="url(#neonGlow)"/>
+            <circle cx="256" cy="256" r="185" fill="none" stroke="#4f46e5" stroke-width="6" stroke-dasharray="20 40 10 20" stroke-opacity="0.6"/>
+
+            <!-- 4. 三角形量子能量約束場 -->
+            <polygon points="256,135 365,325 147,325" fill="none" stroke="url(#neonPurple)" stroke-width="12" stroke-linejoin="round" filter="url(#neonGlow)"/>
+
+            <!-- 5. 核心超炫量子球 (發光主體) -->
+            <circle cx="256" cy="265" r="48" fill="url(#neonCyan)" filter="url(#neonGlow)"/>
+            <circle cx="256" cy="265" r="18" fill="#ffffff" />
+
+            <!-- 6. 核心連結發光導軌與節點 -->
+            <circle cx="147" cy="325" r="12" fill="#22d3ee" />
+            <circle cx="365" cy="325" r="12" fill="#22d3ee" />
+            <circle cx="256" cy="135" r="12" fill="#a855f7" />
+            <rect x="242" y="55" width="28" height="28" rx="6" fill="none" stroke="#22d3ee" stroke-width="6"/>
+        </svg>
+        `;
+
+        // 將 SVG 圖示轉為 Base64 字串，這樣手機可以當成靜態圖片路徑讀取
+        const base64Icon = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(coolSvgIcon)));
+
+        // 顯示在網頁畫面上的預覽框中
+        const displayBox = document.getElementById('desktop-icon-display');
+        displayBox.style.backgroundImage = `url('${base64Icon}')`;
+        displayBox.style.backgroundSize = 'cover';
+        displayBox.style.backgroundPosition = 'center';
+
+        // 注入 iOS 的桌面圖示設定 (Apple Touch Icon)
+        const appleIcon = document.createElement('link');
+        appleIcon.rel = 'apple-touch-icon';
+        appleIcon.href = base64Icon;
+        document.head.appendChild(appleIcon);
+
+        // 動態生成適合 GitHub Pages (隨網域路徑自動調整) 的 PWA Manifest 描述檔
+        const myAppManifest = {
+            name: "量子核心 NEON CORE",
+            short_name: "NEON CORE",
+            start_url: window.location.href, // 自動偵測並適配你上傳到 GitHub 之後的 HTTPS 網址
+            display: "standalone",           // 隱藏瀏覽器網址列，使其看起來像原生 App
+            background_color: "#030712",
+            theme_color: "#030712",
+            icons: [
+                {
+                    src: base64Icon,
+                    sizes: "512x512",
+                    type: "image/svg+xml",
+                    purpose: "any maskable"
+                }
+            ]
+        };
+
+        // 將 Manifest 物件轉換成 blob 網址並加入 head
+        const stringManifest = JSON.stringify(myAppManifest);
+        const manifestBlob = new Blob([stringManifest], {type: 'application/manifest+json'});
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        
+        const manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = manifestURL;
+        document.head.appendChild(manifestLink);
+
+        // 觸發連線測試與手機微震動
+        function triggerSystemCheck() {
+            if (navigator.vibrate) {
+                navigator.vibrate([40, 40, 40]); // 精準觸發三次輕微震動 (科技觸感)
+            }
+            alert("🔒 [安全協定驗證成功]\n已順利在 HTTPS 安全環境中與量子伺服器建立連接。\n現在，您可以點擊瀏覽器底部的「分享 📤」按鈕並選取「加入主畫面 ➕」，將我存入您的手機案頭！");
+        }
+    </script>
+</body>
+</html>
